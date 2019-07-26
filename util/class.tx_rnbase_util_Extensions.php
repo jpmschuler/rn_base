@@ -138,4 +138,20 @@ class tx_rnbase_util_Extensions
             );
         }
     }
+
+    public static function extRelPath($key)
+    {
+        \TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+        if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($key)) {
+            throw new \BadFunctionCallException('TYPO3 Fatal Error: Extension key "' . $key . '" is NOT loaded!', 1365429673);
+        }
+        $relativePathToSiteRoot = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath($key);
+        $typo3MainDirLength = strlen(TYPO3_mainDir);
+        if (substr($relativePathToSiteRoot, 0, $typo3MainDirLength) === TYPO3_mainDir) {
+            $relativePathToSiteRoot = substr($relativePathToSiteRoot, $typo3MainDirLength);
+        } else {
+            $relativePathToSiteRoot = '../' . $relativePathToSiteRoot;
+        }
+        return $relativePathToSiteRoot;
+    }
 }
